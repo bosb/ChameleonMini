@@ -369,6 +369,10 @@ ISR(ACA_AC0_vect) // this interrupt either finds the SOC or gets triggered befor
 // if the half bit duration is not modulated, then add 0 to buffer
 ISR(CODEC_TIMER_LOADMOD_CCB_VECT) // pause found
 {
+    isr_func_CODEC_TIMER_LOADMOD_CCB_VECT;
+}
+void isr_ISO14443_CODEC_TIMER_LOADMOD_CCB_VECT(void)
+{
     uint8_t tmp = CODEC_TIMER_TIMESTAMPS.CNTL;
     CODEC_TIMER_TIMESTAMPS.CNT = 0;
 
@@ -487,6 +491,7 @@ void Sniff14443ACodecInit(void)
     PORTE.DIRSET= PIN3_bm | PIN2_bm;
     // Common Codec Register settings
     CodecInitCommon();
+    isr_func_CODEC_TIMER_LOADMOD_CCB_VECT = &isr_ISO14443_CODEC_TIMER_LOADMOD_CCB_VECT;
     // Enable demodulator power
     CodecSetDemodPower(true);
 

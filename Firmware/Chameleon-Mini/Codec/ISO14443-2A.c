@@ -81,7 +81,6 @@ static void StartDemod(void) {
 
 // Find first pause and start sampling
 ISR(CODEC_DEMOD_IN_INT0_VECT) {
-{
   isr_func_CODEC_DEMOD_IN_INT0_VECT();
 }
 
