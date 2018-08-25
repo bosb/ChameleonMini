@@ -17,6 +17,9 @@
 #include "MifareClassic.h"
 #include "Reader14443A.h"
 #include "Sniff14443A.h"
+#include "Vicinity.h"
+#include "Sl2s2002.h"
+
 
 /* Function wrappers */
 INLINE void ApplicationInit(void) {

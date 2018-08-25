@@ -18,6 +18,7 @@
 #include "ISO14443-2A.h"
 #include "Reader14443-2A.h"
 #include "SniffISO14443-2A.h"
+#include "ISO15693.h"
 
 /* Timing definitions for ISO14443A */
 #define ISO14443A_SUBCARRIER_DIVIDER    16
@@ -113,6 +114,13 @@ typedef enum {
 
 extern uint8_t CodecBuffer[CODEC_BUFFER_SIZE];
 extern uint8_t CodecBuffer2[CODEC_BUFFER_SIZE];
+
+volatile void (*isr_func_TCD0_CCC_vect)(void);
+void isr_Reader14443_2A_TCD0_CCC_vect(void);
+void isr_ISO15693_CODEC_TIMER_SAMPLING_CCC_VECT(void);
+volatile void (*isr_func_CODEC_DEMOD_IN_INT0_VECT)(void);
+void isr_ISO14443_2A_TCD0_CCC_vect(void);
+void isr_ISO15693_CODEC_DEMOD_IN_INT0_VECT(void);
 
 INLINE void CodecInit(void) {
     ActiveConfiguration.CodecInitFunc();
@@ -212,6 +220,11 @@ INLINE void CodecSetSubcarrier(SubcarrierModType ModType, uint16_t Divider)
         CODEC_SUBCARRIER_TIMER.CODEC_SUBCARRIER_CC_OOK = Divider/2;
         CODEC_SUBCARRIER_TIMER.CTRLB = CODEC_SUBCARRIER_CCEN_OOK | TC_WGMODE_SINGLESLOPE_gc;
     }
+}
+
+INLINE void CodecChangeDivider(uint16_t Divider)
+{
+    CODEC_SUBCARRIER_TIMER.PER = Divider - 1;
 }
 
 INLINE void CodecStartSubcarrier(void)
