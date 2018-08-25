@@ -23,6 +23,8 @@ class Device:
     COMMAND_RED_LED = "LEDRED"
     COMMAND_THRESHOLD = "THRESHOLD"
     COMMAND_UPGRADE = "upgrade"
+    COMMAND_TIMEOUT = "TIMEOUT"
+    COMMAND_AUTOCALIBRATE = "AUTOCALIBRATE"
 
 
     STATUS_CODE_OK = 100
@@ -255,3 +257,12 @@ class Device:
         cmdLine = self.COMMAND_UPGRADE + self.LINE_ENDING
         self.serial.write(cmdLine.encode('ascii'))
         return 0
+
+    def cmdTimeout(self, newFunction = None):
+        if (newFunction == self.SUGGEST_CHAR):
+            return self.getCmdSuggestions(self.COMMAND_TIMEOUT)
+        else:
+            return self.getSetCmd(self.COMMAND_TIMEOUT, newFunction)
+
+    def cmdAutocalibrate(self, newFunction = None):
+        return self.getSetCmd(self.COMMAND_AUTOCALIBRATE)
